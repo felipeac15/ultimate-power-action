@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ULTIMATE AUCTION — Battle Royale</title>
+<link rel="stylesheet" href="style.css">
+  <link rel="manifest" href="./manifest.json">
+  <meta name="theme-color" content="#10101a">
+</head>
+<body>
+<div class="bg"></div>
+<div class="app">
+<header class="top">
+  <div><div class="kicker">ULTIMATE AUCTION</div><h1>⚡ BATTLE ROYALE</h1><p>Un seul univers par partie • Enchères au choix</p></div>
+  <button id="reset" class="ghost">↻ RESTART</button>
+</header>
+
+<section class="setup">
+  <div>
+    <div class="setup-title">🎯 CONFIGURATION DE LA PARTIE</div>
+    <p>Choisissez <b>un seul sujet</b> pour toute la partie.</p>
+  </div>
+  <div class="setup-grid">
+    <label>Sujet
+      <select id="subject">
+        <option value="ANIME">Anime</option>
+        <option value="MARVEL">Marvel</option>
+        <option value="DC">DC</option>
+        <option value="ANIMAUX TERRESTRES">Animaux terrestres</option>
+        <option value="ANIMAUX AQUATIQUES">Animaux aquatiques</option>
+      </select>
+    </label>
+    <label id="animeChoice">Quel anime ?
+      <select id="anime">
+        <option value="Naruto">Naruto</option>
+        <option value="Dragon Ball">Dragon Ball</option>
+        <option value="One Piece">One Piece</option>
+        <option value="Jujutsu Kaisen">Jujutsu Kaisen</option>
+        <option value="Demon Slayer">Demon Slayer</option>
+        <option value="Solo Leveling">Solo Leveling</option>
+        <option value="My Hero Academia">My Hero Academia</option>
+        <option value="Attack on Titan">Attack on Titan</option>
+        <option value="Bleach">Bleach</option>
+        <option value="Black Clover">Black Clover</option>
+        <option value="7 Deadly Sins">7 Deadly Sins</option>
+      </select>
+    </label>
+  </div>
+  <div class="format-note">👥 <b id="formatText">5 vs 5</b> → <b id="charTotal">10 personnages</b> seront tirés.</div>
+</section>
+<section class="hud">
+  <div class="hudbox"><span>MANCHE</span><b id="round">1</b></div>
+  <div class="hudbox"><span>PERSONNAGE</span><b id="count">0 / 30</b></div>
+  <div class="hudbox"><span>JOUEURS</span><b id="players">5 vs 5</b></div>
+  <div class="hudbox"><span>STATUT</span><b id="status">PRÊT</b></div>
+</section>
+
+<section class="battle">
+<aside class="team blue">
+  <div class="teamhead"><div><small>ÉQUIPE 01</small><h2 id="nameA">Équipe A</h2></div><div class="avatar">A</div></div>
+  <div class="budget"><span>BUDGET</span><strong id="budgetA">$20</strong></div>
+  <label>Nom <input id="inputA" value="Équipe A"></label>
+  <label>Joueurs <select id="playersA"><option value="4">4</option><option value="5" selected>5</option></select></label>
+  <h3>ROSTER <span id="sizeA">0/5</span></h3><div id="rosterA" class="roster"></div>
+</aside>
+
+<main class="arena">
+  <div class="topic" id="topic">ANIME</div>
+  <div class="rarity" id="rarity">TRÈS OP</div>
+  <div class="card">
+    <div class="portrait" id="portrait">?</div>
+    <div class="charname" id="charname">Prêt pour l'enchère</div>
+    <div class="universe" id="universe">Tire un personnage pour commencer</div>
+    <div class="power"><span>PUISSANCE</span><div><i id="powerbar"></i></div><b id="powernum">—</b></div>
+  </div>
+  <div class="auction">
+    <div><small>ENCHÈRE ACTUELLE</small><strong id="bid">$0</strong><span>Tour de <b id="turn">Équipe A</b></span></div>
+    <div class="custombid">
+      <span>TA MISE</span>
+      <div class="inputrow">
+        <span>$</span><input id="bidInput" type="number" min="1" step="1" placeholder="Montant">
+        <button id="bidBtn">MISER</button>
+      </div>
+      <small id="minimum">Minimum : $1</small>
+    </div>
+    <div class="actions"><button id="pass" class="ghost">PASSER</button></div>
+  </div>
+  <button id="draw" class="draw">🎲 LANCER L'ENCHÈRE</button>
+  <div id="feed" class="feed">Bienvenue dans la Grande Enchère.</div>
+</main>
+
+<aside class="team red">
+  <div class="teamhead"><div><small>ÉQUIPE 02</small><h2 id="nameB">Équipe B</h2></div><div class="avatar">B</div></div>
+  <div class="budget"><span>BUDGET</span><strong id="budgetB">$20</strong></div>
+  <label>Nom <input id="inputB" value="Équipe B"></label>
+  <label>Joueurs <select id="playersB"><option value="4">4</option><option value="5" selected>5</option></select></label>
+  <h3>ROSTER <span id="sizeB">0/5</span></h3><div id="rosterB" class="roster"></div>
+</aside>
+</section>
+
+<section class="rules"><h2>⚔️ Règles de la bataille</h2>
+<div><span>01</span> Chaque équipe possède <b>20 $</b>.</div><div><span>02</span> Choisissez <b>4 ou 5 joueurs</b>.</div><div><span>03</span> Chaque personnage a un niveau : <b>Très OP, Fort ou Moyen</b>.</div><div><span>04</span> Le personnage vendu rejoint le roster et l'argent est retiré.</div><div><span>05</span> Une fois le roster rempli, l'équipe ne peut plus acheter.</div></section>
+</div>
+<script src="script.js"></script>
+
+<script>
+  if ("serviceWorker" in navigator) {
+    window.addEventListener("load", () => {
+      navigator.serviceWorker.register("./service-worker.js")
+        .catch((error) => console.error("Service worker registration failed:", error));
+    });
+  }
+</script>
+
+</body></html>
