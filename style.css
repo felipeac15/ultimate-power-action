@@ -14,6 +14,3 @@
 }
 .priority-box p{margin:7px 0 12px;color:#ddd}
 .priority-box button{margin-right:8px;margin-bottom:6px}
-.priority-box{margin-top:14px;padding:16px;border:1px solid rgba(255,255,255,.2);border-radius:14px;background:rgba(255,170,0,.10)}
-.priority-box p{margin:0 0 12px}.priority-box button{margin-right:8px}
-.result-box{margin:28px auto;padding:24px;max-width:900px;border:1px solid rgba(255,255,255,.18);border-radius:22px;background:rgba(255,255,255,.06);text-align:center}.result-title{font-size:12px;letter-spacing:2px;font-weight:800;opacity:.7}.result-score{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:18px 0}.result-score>div{padding:18px;border-radius:16px;background:rgba(255,255,255,.06);display:flex;flex-direction:column;gap:5px}.result-score strong{font-size:42px}.result-score span{font-size:12px;opacity:.65}.result-box h2{margin:12px 0 6px}.result-rosters{display:grid;grid-template-columns:1fr 1fr;gap:14px;text-align:left;margin-top:20px}.result-rosters>div{display:flex;flex-direction:column;gap:6px;padding:14px;border-radius:14px;background:rgba(0,0,0,.16)}.result-rosters span{font-size:13px;opacity:.85}@media(max-width:650px){.result-score,.result-rosters{grid-template-columns:1fr}}
