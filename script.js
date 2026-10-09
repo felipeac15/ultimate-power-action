@@ -218,10 +218,52 @@ function render(){
  $('bidBtn').disabled=!state.current||state.ended;$('pass').disabled=!state.current||state.ended;$('draw').disabled=!!state.current||state.ended;
 }
 function say(m){$('feed').textContent=m}
+function resolveBrokePriority(){
+ if(!state.current||state.ended)return;
+ const aBroke=state.cash.a<=0,bBroke=state.cash.b<=0;
+ // Priorité uniquement lorsqu'une seule équipe n'a plus d'argent.
+ if(aBroke===bBroke)return;
+ const poor=aBroke?'a':'b',rich=poor==='a'?'b':'a';
+ const poorHasRoom=roster(poor).length<players(poor);
+ const richHasRoom=roster(rich).length<players(rich);
+
+ // Si l'équipe avec de l'argent a déjà son effectif complet, elle ne peut pas prendre le personnage.
+ if(!richHasRoom){
+   if(poorHasRoom){
+     roster(poor).push(state.current);
+     say(`🎁 ${name(rich)} a déjà complété son équipe : ${state.current[3]} est donné gratuitement à ${name(poor)}.`);
+   }else{
+     say(`⏭️ Les deux équipes ont complété leur effectif. ${state.current[3]} est ignoré.`);
+   }
+   next();
+   return;
+ }
+
+ const take=confirm(
+   `PRIORITÉ À ${name(rich)}\n\n`+
+   `${name(poor)} n'a plus d'argent.\n`+
+   `Que veux-tu faire avec ${state.current[3]} ?\n\n`+
+   `OK = prendre le personnage pour 1 $\n`+
+   `Annuler = ${poorHasRoom?'le donner gratuitement à '+name(poor):'passer ce personnage'}`
+ );
+
+ if(take){
+   state.cash[rich]-=1;
+   roster(rich).push(state.current);
+   say(`🔨 Priorité utilisée : ${state.current[3]} rejoint ${name(rich)} pour 1 $.`);
+ }else if(poorHasRoom){
+   roster(poor).push(state.current);
+   say(`🎁 ${name(rich)} donne gratuitement ${state.current[3]} à ${name(poor)}.`);
+ }else{
+   say(`⏭️ ${name(rich)} passe ${state.current[3]} : l'autre équipe a déjà complété son effectif.`);
+ }
+ next();
+}
+
 function draw(){if(state.ended)return;if(state.used.length>=total()||roster('a').length>=players('a')&&roster('b').length>=players('b'))return finishDraft();
  const eligible=pool().filter(c=>!state.used.includes(c[3]));if(!eligible.length){say('Il ne reste plus assez de personnages dans cet univers.');return}
  const c=eligible[Math.floor(Math.random()*eligible.length)];state.current=c;state.used.push(c[3]);state.currentBid=0;state.highBidder=null;state.turn=state.turn==='a'?'b':'a';
- $('topic').textContent=c[0]==='ANIME'?'ANIME • '+c[1]:c[0];$('rarity').textContent='PUISSANCE SECRÈTE';$('charname').textContent=c[3];$('universe').textContent=c[4]+' • Version PRIME';$('portrait').textContent=c[3].split(' ').map(w=>w[0]).join('').slice(0,3).toUpperCase();$('powernum').textContent='???';$('powerbar').style.width='0%';$('bidInput').value='';say(`🔥 ${c[3]} est aux enchères. ${name(state.turn)} commence !`);render();}
+ $('topic').textContent=c[0]==='ANIME'?'ANIME • '+c[1]:c[0];$('rarity').textContent='PUISSANCE SECRÈTE';$('charname').textContent=c[3];$('universe').textContent=c[4]+' • Version PRIME';$('portrait').textContent=c[3].split(' ').map(w=>w[0]).join('').slice(0,3).toUpperCase();$('powernum').textContent='???';$('powerbar').style.width='0%';$('bidInput').value='';say(`🔥 ${c[3]} est aux enchères. ${name(state.turn)} commence !`);render();resolveBrokePriority();}
 function bid(){if(!state.current||state.ended)return;const t=state.turn, amount=Number($('bidInput').value), min=state.currentBid+1;if(roster(t).length>=players(t)){state.turn=t==='a'?'b':'a';say(`${name(t)} a déjà complété son équipe. ${name(state.turn)} peut miser.`);render();return}
  if(!Number.isInteger(amount)||amount<min){say(`Mise invalide : le minimum est ${min} $.`);return}if(amount>state.cash[t]){say(`${name(t)} n'a pas assez d'argent.`);return}
  state.currentBid=amount;state.highBidder=t;state.turn=t==='a'?'b':'a';if(roster(state.turn).length>=players(state.turn)||state.cash[state.turn]===0){sell();return}say(`${name(t)} mise ${amount} $. À ${name(state.turn)} de répondre.`);$('bidInput').value='';render();}
